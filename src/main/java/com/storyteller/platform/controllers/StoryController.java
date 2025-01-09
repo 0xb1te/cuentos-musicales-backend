@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.storyteller.platform.models.Story;
@@ -56,5 +57,11 @@ public class StoryController {
 	public ResponseEntity<Void> deleteStory(@PathVariable Long id) {
 		storyService.deleteStory(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/by-menu-level")
+	public ResponseEntity<List<Story>> getStoriesByMenuLevelId(@RequestParam Long menuLevelId) {
+		List<Story> stories = storyService.getStoriesByMenuLevelId(menuLevelId);
+		return ResponseEntity.ok(stories);
 	}
 }

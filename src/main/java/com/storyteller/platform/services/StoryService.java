@@ -1,5 +1,6 @@
 package com.storyteller.platform.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class StoryService {
 	@Autowired
 	private InteractiveElementRepository interactiveElementRepository;
 
+	@Autowired
+	private MenuService menuService;
+
 	@Transactional
 	public Story updateStory(Long id, Story updatedStory) {
 		// Find the existing story by ID
@@ -43,7 +47,7 @@ public class StoryService {
 		existingStory.setCoverImageUrl(updatedStory.getCoverImageUrl());
 		existingStory.setImageUrl(updatedStory.getImageUrl());
 		existingStory.setHasInteractiveElements(updatedStory.isHasInteractiveElements());
-		existingStory.setMenuLevelId(updatedStory.getMenuLevelId());
+		existingStory.setMenuLevelId(updatedStory.getMenuLevelId()); // Now expects a List<Long>
 
 		// Update TeachingGuide if it exists
 		if (updatedStory.getTeachingGuide() != null) {
@@ -65,7 +69,7 @@ public class StoryService {
 		// Update InteractiveElements if they exist
 		if (updatedStory.getInteractiveElements() != null && !updatedStory.getInteractiveElements().isEmpty()) {
 			// Delete existing interactive elements
-			interactiveElementRepository.deleteById(existingStory.getId());
+			interactiveElementRepository.deleteById(id);
 
 			// Add new interactive elements
 			for (InteractiveElement interactiveElement : updatedStory.getInteractiveElements()) {
@@ -102,6 +106,19 @@ public class StoryService {
 
 	public List<Story> getAllStories() {
 		return storyRepository.findAll();
+	}
+
+	/**
+	 * Get stories by menu_level_id.
+	 *
+	 * @param menuLevelId The ID of the category (e.g., 211 for "3-5 años").
+	 * @return A list of stories filtered by the menu_level_id.
+	 */
+	public List<Story> getStoriesByMenuLevelId(Long menuLevelId) {
+		if (!menuService.isValidMenuLevelId(menuLevelId)) {
+			return Collections.emptyList(); // Invalid menu_level_id
+		}
+		return storyRepository.findByMenuLevelId(menuLevelId);
 	}
 
 	public Story getStoryBySlug(String slug) {

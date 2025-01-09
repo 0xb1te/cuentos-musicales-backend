@@ -58,5 +58,6 @@ public class Story {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	private Long menuLevelId;
+	@Column(name = "menu_level_id", columnDefinition = "bigint[]")
+	private List<Long> menuLevelId; // Change from Long to List<Long>
 }

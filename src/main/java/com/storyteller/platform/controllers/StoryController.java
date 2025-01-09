@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/api/stories")
+@CrossOrigin(origins = "http://localhost:4200")
 public class StoryController {
 
 	@Autowired
@@ -27,13 +29,12 @@ public class StoryController {
 
 	@GetMapping
 	public ResponseEntity<List<Story>> getAllStories() {
-		// Return all stories
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(storyService.getAllStories());
 	}
 
-	@GetMapping("/{slug}")
-	public ResponseEntity<Story> getStoryBySlug(@PathVariable String slug) {
-		return ResponseEntity.ok(storyService.getStoryBySlug(slug));
+	@GetMapping("/{id}")
+	public ResponseEntity<Story> getStoryById(@PathVariable Long id) {
+		return ResponseEntity.ok(storyService.getStoryById(id));
 	}
 
 	@PostMapping
@@ -45,15 +46,15 @@ public class StoryController {
 
 	@PutMapping("/{id}")
 	@SecurityRequirement(name = "Bearer Authentication")
-	public ResponseEntity<?> updateStory(@PathVariable Long id, @RequestBody Story story) {
-		// Update story
-		return ResponseEntity.ok().build();
+	public ResponseEntity<Story> updateStory(@PathVariable Long id, @RequestBody Story story) {
+		Story updatedStory = storyService.updateStory(id, story);
+		return ResponseEntity.ok(updatedStory);
 	}
 
 	@DeleteMapping("/{id}")
 	@SecurityRequirement(name = "Bearer Authentication")
-	public ResponseEntity<?> deleteStory(@PathVariable Long id) {
-		// Delete story
-		return ResponseEntity.ok().build();
+	public ResponseEntity<Void> deleteStory(@PathVariable Long id) {
+		storyService.deleteStory(id);
+		return ResponseEntity.noContent().build();
 	}
 }

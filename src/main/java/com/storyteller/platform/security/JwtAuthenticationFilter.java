@@ -1,5 +1,6 @@
 package com.storyteller.platform.security;
 
+import java.io.IOException;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.storyteller.platform.services.JwtService;
 
-import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -38,9 +38,9 @@ public class StoryController {
 
 	@PostMapping
 	@SecurityRequirement(name = "Bearer Authentication")
-	public ResponseEntity<?> createStory(@RequestBody Story story) {
-		// Create new story
-		return ResponseEntity.ok().build();
+	public ResponseEntity<Story> createStory(@RequestBody Story story) {
+		Story createdStory = storyService.createStory(story);
+		return ResponseEntity.ok(createdStory);
 	}
 
 	@PutMapping("/{id}")

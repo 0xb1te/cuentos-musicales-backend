@@ -48,8 +48,11 @@ public class PaymentService {
 
 			if ("payment_intent.succeeded".equals(type)) {
 				String paymentIntentId = event.get("data").get("object").get("id").asText();
+				Long storyId = event.get("data").get("object").get("metadata").get("storyId").asLong(); // Extract
+																										// storyId from
+																										// metadata
 				logger.info("Processing successful payment intent: {}", paymentIntentId);
-				processSale(paymentIntentId);
+				processSale(paymentIntentId, storyId); // Pass both paymentIntentId and storyId
 			}
 		} catch (IOException e) {
 			logger.error("Failed to process webhook payload", e);
@@ -57,10 +60,11 @@ public class PaymentService {
 		}
 	}
 
-	private void processSale(String paymentIntentId) {
+	private void processSale(String paymentIntentId, Long storyId) {
 		Sales sale = new Sales();
 		sale.setStripePaymentId(paymentIntentId);
 		sale.setStatus("completed");
+		sale.setId(storyId); // Set the story ID
 		salesRepository.save(sale);
 		logger.info("Processed sale for payment intent: {}", paymentIntentId);
 	}

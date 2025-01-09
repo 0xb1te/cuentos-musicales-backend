@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.4.1</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.storyteller</groupId>
 	<artifactId>platform</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>platform</name>
 	<description>Project for story telling selling app</description>
-	<url/>
+	<url />
 	<licenses>
-		<license/>
+		<license />
 	</licenses>
 	<developers>
-		<developer/>
+		<developer />
 	</developers>
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection />
+		<developerConnection />
+		<tag />
+		<url />
 	</scm>
 	<properties>
 		<java.version>23</java.version>
@@ -52,9 +53,101 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<!-- JSON Web Token Libraries -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Lombok -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <optional>true</optional>
+		</dependency>
+		
+		<!-- Spring Security -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
+		<!-- JWT -->
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt-api</artifactId>
+		    <version>0.11.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt-impl</artifactId>
+		    <version>0.11.5</version>
+		    <scope>runtime</scope>
+		</dependency>
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt-jackson</artifactId>
+		    <version>0.11.5</version>
+		    <scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.vladmihalcea</groupId>
+		    <artifactId>hibernate-types-52</artifactId>
+		    <version>2.16.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.vladmihalcea</groupId>
+		    <artifactId>hibernate-types-60</artifactId>
+		    <version>2.21.1</version>
+		</dependency>
+		
+	    <!-- Swagger Core -->
+	    <dependency>
+	        <groupId>io.swagger.core.v3</groupId>
+	        <artifactId>swagger-core</artifactId>
+	        <version>2.2.15</version> <!-- Use the latest version -->
+	    </dependency>
+	
+	    <!-- Swagger Annotations -->
+	    <dependency>
+	        <groupId>io.swagger.core.v3</groupId>
+	        <artifactId>swagger-annotations</artifactId>
+	        <version>2.2.15</version> <!-- Use the latest version -->
+	    </dependency>
+	
+	    <!-- Swagger UI (Optional, for API documentation UI) -->
+	    <dependency>
+	        <groupId>org.springdoc</groupId>
+	        <artifactId>springdoc-openapi-ui</artifactId>
+	        <version>1.7.0</version> <!-- Use the latest version -->
+	    </dependency>
+	    
+	    <!-- Stipe API -->
+	    <dependency>
+		    <groupId>com.stripe</groupId>
+		    <artifactId>stripe-java</artifactId>
+		    <version>24.0.0</version> <!-- Use the latest version -->
 		</dependency>
 	</dependencies>
 

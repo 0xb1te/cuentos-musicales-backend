@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference; // Import JsonManagedReference
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,15 +43,17 @@ public class Story {
 	private String previewContent;
 
 	private String coverImageUrl;
-	private String imageUrl; // Added field
+	private String imageUrl;
 
-	private boolean hasInteractiveElements; // Added field
+	private boolean hasInteractiveElements;
 
-	@OneToOne(mappedBy = "story", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private TeachingGuide teachingGuide; // Relationship with TeachingGuide
+	@OneToOne(mappedBy = "story", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JsonManagedReference // Marks this as the "parent" side of the relationship
+	private TeachingGuide teachingGuide;
 
-	@OneToMany(mappedBy = "story", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<InteractiveElement> interactiveElements; // Relationship with InteractiveElement
+	@OneToMany(mappedBy = "story", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JsonIgnore // Ignore this field during serialization
+	private List<InteractiveElement> interactiveElements;
 
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;

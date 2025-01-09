@@ -2,6 +2,8 @@ package com.storyteller.platform.models;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference; // Import JsonBackReference
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +24,7 @@ public class TeachingGuide {
 
 	@OneToOne
 	@JoinColumn(name = "story_id", nullable = false)
+	@JsonBackReference // Marks this as the "child" side of the relationship
 	private Story story;
 
 	@Column(columnDefinition = "TEXT")

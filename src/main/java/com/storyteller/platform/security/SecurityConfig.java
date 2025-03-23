@@ -32,8 +32,11 @@ public class SecurityConfig {
 						.permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/menu", "/api/stories/**", "/api/menu-options/**",
 								"/api/menu-level/*/menu-options", "/api/admin/menu-options/all", "/api/menu-options/flat")
-						.permitAll().requestMatchers("/api/payments/webhook").permitAll()
-						.requestMatchers("/api/admin/menu-option", "/api/admin/menu-option/**").authenticated()
+						.permitAll()
+						.requestMatchers("/api/payments/webhook").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/admin/menu-option", "/api/admin/menu-option/**").authenticated()
+						.requestMatchers(HttpMethod.PUT, "/api/admin/menu-option", "/api/admin/menu-option/**").authenticated()
+						.requestMatchers(HttpMethod.DELETE, "/api/admin/menu-option", "/api/admin/menu-option/**").authenticated()
 						.anyRequest().authenticated())
 				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

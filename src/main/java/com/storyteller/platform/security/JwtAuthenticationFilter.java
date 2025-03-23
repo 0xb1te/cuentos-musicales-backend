@@ -3,7 +3,10 @@ package com.storyteller.platform.security;
 import java.io.IOException;
 import java.util.Collections;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +24,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+	private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
 	@Autowired
 	private JwtService jwtService;
 
@@ -28,16 +33,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException, java.io.IOException {
 
+		String path = request.getRequestURI();
+		String method = request.getMethod();
+		logger.debug("Request: {} {}", method, path);
+		
 		String token = getTokenFromRequest(request);
 
-		if (token != null && jwtService.validateToken(token)) {
-			String username = jwtService.getUsernameFromToken(token);
-			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null,
-					Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+		if (token != null) {
+			logger.debug("Token encontrado en la solicitud");
+			if (jwtService.validateToken(token)) {
+				String username = jwtService.getUsernameFromToken(token);
+				logger.debug("Token validado para el usuario: {}", username);
+				
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null,
+						Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+				logger.debug("Autenticación establecida en el contexto de seguridad");
+			} else {
+				logger.warn("Token no válido para la ruta: {} {}", method, path);
+			}
+		} else {
+			logger.debug("No se encontró token para la ruta: {} {}", method, path);
 		}
 
 		filterChain.doFilter(request, response);
+	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		// Skip OPTIONS requests to allow CORS preflight
+		boolean isOptions = HttpMethod.OPTIONS.matches(request.getMethod());
+		if (isOptions) {
+			logger.debug("Omitiendo filtro para solicitud OPTIONS: {}", request.getRequestURI());
+		}
+		return isOptions;
 	}
 
 	private String getTokenFromRequest(HttpServletRequest request) {

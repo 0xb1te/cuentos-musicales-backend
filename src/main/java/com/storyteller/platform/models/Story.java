@@ -16,6 +16,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -29,6 +31,7 @@ public class Story {
 
 	private String title;
 	private String slug;
+	private String author;
 
 	@Column(columnDefinition = "TEXT")
 	private String description;
@@ -38,12 +41,21 @@ public class Story {
 
 	private BigDecimal price;
 	private String stripePriceId;
+	private Boolean isFree;
 
 	@Column(columnDefinition = "TEXT")
 	private String previewContent;
 
 	private String coverImageUrl;
 	private String imageUrl;
+	private String audioPreviewUrl;
+	private String audioFullUrl;
+	private String indicativeImage1;
+	private String indicativeImage2;
+	private String emotionalGuideUrl;
+	private String musicalGuideUrl;
+	private String educationalGuideUrl;
+	private Integer duration;
 
 	private boolean hasInteractiveElements;
 
@@ -60,4 +72,15 @@ public class Story {
 
 	@Column(name = "menu_level_id", columnDefinition = "bigint[]")
 	private List<Long> menuLevelId; // Change from Long to List<Long>
+	
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+	
+	@PreUpdate
+	protected void onUpdate() {
+		this.updatedAt = LocalDateTime.now();
+	}
 }

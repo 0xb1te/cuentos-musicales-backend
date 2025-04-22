@@ -11,6 +11,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 @Data
 @Entity
@@ -25,8 +26,9 @@ public class MenuOption {
     @Column(columnDefinition = "TEXT")
     private String description;
     
-    private String iconUrl;
-    private String backgroundImageUrl;
+    @Column(columnDefinition = "TEXT[]")
+    private String[] images;
+    
     private String route;
     
     @Column(name = "\"order\"")

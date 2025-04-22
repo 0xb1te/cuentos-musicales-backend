@@ -61,12 +61,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		String path = request.getRequestURI();
+		
 		// Skip OPTIONS requests to allow CORS preflight
 		boolean isOptions = HttpMethod.OPTIONS.matches(request.getMethod());
+		
+		// Skip file access paths to allow public access to image files
+		boolean isFileAccess = path.startsWith("/files/");
+		
 		if (isOptions) {
-			logger.debug("Omitiendo filtro para solicitud OPTIONS: {}", request.getRequestURI());
+			logger.debug("Omitiendo filtro para solicitud OPTIONS: {}", path);
 		}
-		return isOptions;
+		
+		if (isFileAccess) {
+			logger.debug("Omitiendo filtro para acceso a archivos: {}", path);
+		}
+		
+		return isOptions || isFileAccess;
 	}
 
 	private String getTokenFromRequest(HttpServletRequest request) {

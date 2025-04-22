@@ -86,8 +86,20 @@ public class MenuOptionController {
             if (item.has("route")) {
                 option.put("route", item.get("route").asText());
             }
-            if (item.has("imageUrl")) {
-                option.put("imageUrl", item.get("imageUrl").asText());
+            
+            // Handle images array
+            if (item.has("images") && item.get("images").isArray()) {
+                // Convert JsonNode array to Java array
+                ArrayNode imagesNode = (ArrayNode) item.get("images");
+                String[] imagesArray = new String[imagesNode.size()];
+                for (int i = 0; i < imagesNode.size(); i++) {
+                    imagesArray[i] = imagesNode.get(i).asText();
+                }
+                option.put("images", imagesArray);
+            } else if (item.has("imageUrl")) {
+                // Legacy support for single imageUrl field
+                String[] imagesArray = new String[] { item.get("imageUrl").asText() };
+                option.put("images", imagesArray);
             }
             
             flatOptions.add(option);
@@ -146,6 +158,26 @@ public class MenuOptionController {
                     }
                 } else if (value instanceof Boolean) {
                     newOption.put(key, (Boolean) value);
+                } else if (value instanceof List) {
+                    // Handle arrays - especially important for images
+                    List<?> list = (List<?>) value;
+                    ArrayNode arrayNode = objectMapper.createArrayNode();
+                    for (Object listItem : list) {
+                        if (listItem instanceof String) {
+                            arrayNode.add((String) listItem);
+                        } else if (listItem instanceof Number) {
+                            if (listItem instanceof Integer) {
+                                arrayNode.add((Integer) listItem);
+                            } else if (listItem instanceof Long) {
+                                arrayNode.add((Long) listItem);
+                            } else if (listItem instanceof Double) {
+                                arrayNode.add((Double) listItem);
+                            }
+                        } else if (listItem instanceof Boolean) {
+                            arrayNode.add((Boolean) listItem);
+                        }
+                    }
+                    newOption.set(key, arrayNode);
                 }
             }
             
@@ -315,6 +347,26 @@ public class MenuOptionController {
                         }
                     } else if (value instanceof Boolean) {
                         nodeToUpdate.put(key, (Boolean) value);
+                    } else if (value instanceof List) {
+                        // Handle arrays - especially important for images
+                        List<?> list = (List<?>) value;
+                        ArrayNode arrayNode = objectMapper.createArrayNode();
+                        for (Object listItem : list) {
+                            if (listItem instanceof String) {
+                                arrayNode.add((String) listItem);
+                            } else if (listItem instanceof Number) {
+                                if (listItem instanceof Integer) {
+                                    arrayNode.add((Integer) listItem);
+                                } else if (listItem instanceof Long) {
+                                    arrayNode.add((Long) listItem);
+                                } else if (listItem instanceof Double) {
+                                    arrayNode.add((Double) listItem);
+                                }
+                            } else if (listItem instanceof Boolean) {
+                                arrayNode.add((Boolean) listItem);
+                            }
+                        }
+                        nodeToUpdate.set(key, arrayNode);
                     }
                 }
                 
@@ -383,6 +435,26 @@ public class MenuOptionController {
                         }
                     } else if (value instanceof Boolean) {
                         nodeToUpdate.put(key, (Boolean) value);
+                    } else if (value instanceof List) {
+                        // Handle arrays - especially important for images
+                        List<?> list = (List<?>) value;
+                        ArrayNode arrayNode = objectMapper.createArrayNode();
+                        for (Object listItem : list) {
+                            if (listItem instanceof String) {
+                                arrayNode.add((String) listItem);
+                            } else if (listItem instanceof Number) {
+                                if (listItem instanceof Integer) {
+                                    arrayNode.add((Integer) listItem);
+                                } else if (listItem instanceof Long) {
+                                    arrayNode.add((Long) listItem);
+                                } else if (listItem instanceof Double) {
+                                    arrayNode.add((Double) listItem);
+                                }
+                            } else if (listItem instanceof Boolean) {
+                                arrayNode.add((Boolean) listItem);
+                            }
+                        }
+                        nodeToUpdate.set(key, arrayNode);
                     }
                 }
                 

@@ -11,8 +11,7 @@ public class MenuOptionDTO {
     private Long id;
     private String title;
     private String description;
-    private String iconUrl;
-    private String backgroundImageUrl;
+    private String[] images;
     private String route;
     private Integer order;
     private Boolean isActive;

@@ -73,8 +73,20 @@ public class MenuFlatOptionsService {
             if (item.has("route")) {
                 option.put("route", item.get("route").asText());
             }
-            if (item.has("imageUrl")) {
-                option.put("imageUrl", item.get("imageUrl").asText());
+            
+            // Handle images array
+            if (item.has("images") && item.get("images").isArray()) {
+                // Convert JsonNode array to Java array
+                ArrayNode imagesNode = (ArrayNode) item.get("images");
+                String[] imagesArray = new String[imagesNode.size()];
+                for (int i = 0; i < imagesNode.size(); i++) {
+                    imagesArray[i] = imagesNode.get(i).asText();
+                }
+                option.put("images", imagesArray);
+            } else if (item.has("imageUrl")) {
+                // Legacy support for single imageUrl field
+                String[] imagesArray = new String[] { item.get("imageUrl").asText() };
+                option.put("images", imagesArray);
             }
             
             flatOptions.add(option);

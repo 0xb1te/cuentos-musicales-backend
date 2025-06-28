@@ -48,6 +48,17 @@ public class StoryService {
 		existingStory.setImageUrl(updatedStory.getImageUrl());
 		existingStory.setHasInteractiveElements(updatedStory.isHasInteractiveElements());
 		existingStory.setMenuLevelId(updatedStory.getMenuLevelId()); // Now expects a List<Long>
+		existingStory.setCustomPhrase(updatedStory.getCustomPhrase());
+		existingStory.setAuthor(updatedStory.getAuthor());
+		existingStory.setIsFree(updatedStory.getIsFree());
+		existingStory.setAudioPreviewUrl(updatedStory.getAudioPreviewUrl());
+		existingStory.setAudioFullUrl(updatedStory.getAudioFullUrl());
+		existingStory.setIndicativeImage1(updatedStory.getIndicativeImage1());
+		existingStory.setIndicativeImage2(updatedStory.getIndicativeImage2());
+		existingStory.setEmotionalGuideUrl(updatedStory.getEmotionalGuideUrl());
+		existingStory.setMusicalGuideUrl(updatedStory.getMusicalGuideUrl());
+		existingStory.setEducationalGuideUrl(updatedStory.getEducationalGuideUrl());
+		existingStory.setDuration(updatedStory.getDuration());
 
 		// Update TeachingGuide if it exists
 		if (updatedStory.getTeachingGuide() != null) {

@@ -2,6 +2,7 @@ package com.storyteller.platform.services;
 
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.storyteller.platform.repositories.MenuLevelRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 @Service
@@ -37,8 +39,8 @@ public class JwtService {
 	private int jwtExpirationInMs;
 
 	public JwtService(@Value("${app.jwtSecret}") String jwtSecret) {
-		// Create the key from the provided JWT secret
-		this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+		// Generate a secure key using the provided secret as a seed
+		this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 		logger.info("JWT service initialized with secure key for HS512");
 	}
 

@@ -69,6 +69,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		// Skip file access paths to allow public access to image files
 		boolean isFileAccess = path.startsWith("/files/");
 		
+		// Skip actuator endpoints
+		boolean isActuator = path.startsWith("/actuator/");
+		
 		if (isOptions) {
 			logger.debug("Omitiendo filtro para solicitud OPTIONS: {}", path);
 		}
@@ -77,7 +80,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			logger.debug("Omitiendo filtro para acceso a archivos: {}", path);
 		}
 		
-		return isOptions || isFileAccess;
+		if (isActuator) {
+			logger.debug("Omitiendo filtro para endpoint de actuator: {}", path);
+		}
+		
+		return isOptions || isFileAccess || isActuator;
 	}
 
 	private String getTokenFromRequest(HttpServletRequest request) {

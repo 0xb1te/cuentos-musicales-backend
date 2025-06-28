@@ -52,10 +52,21 @@ public class Story {
 	private String audioFullUrl;
 	private String indicativeImage1;
 	private String indicativeImage2;
+	private String dedicationImageUrl;
+	private String presentationImageUrl;
 	private String emotionalGuideUrl;
 	private String musicalGuideUrl;
 	private String educationalGuideUrl;
 	private Integer duration;
+
+	@Column(columnDefinition = "TEXT")
+	private String customPhrase; // Admin-defined custom phrase displayed at the top of story items
+
+	// Color theme fields for admin customization
+	private String backgroundColor; // background color of the card and pop-ups
+	private String buttonsColor; // background color for the buttons of the story
+	private String textColorButtons; // text color used on the text of the buttons of the container
+	private String textColor; // text color used on the text of the pop-ups
 
 	private boolean hasInteractiveElements;
 
@@ -71,14 +82,14 @@ public class Story {
 	private LocalDateTime updatedAt;
 
 	@Column(name = "menu_level_id", columnDefinition = "bigint[]")
-	private List<Long> menuLevelId; // Change from Long to List<Long>
-	
+	private List<Long> menuLevelId;
+
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = LocalDateTime.now();
 	}
-	
+
 	@PreUpdate
 	protected void onUpdate() {
 		this.updatedAt = LocalDateTime.now();

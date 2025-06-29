@@ -60,7 +60,7 @@ CREATE TABLE stories (
     indicative_image2 VARCHAR(255),
     emotional_guide_url VARCHAR(255),
     musical_guide_url VARCHAR(255),
-    educational_guide_url VARCHAR(255),
+    	awakening_guide_url VARCHAR(255),
     duration INTEGER,
     has_interactive_elements BOOLEAN DEFAULT false,
     menu_level_id BIGINT[],
@@ -205,7 +205,7 @@ INSERT INTO stories (
     title, slug, author, description, content, price, is_free, 
     stripe_price_id, preview_content, cover_image_url, image_url, 
     audio_preview_url, audio_full_url, indicative_image1, indicative_image2,
-    emotional_guide_url, musical_guide_url, educational_guide_url, duration,
+           emotional_guide_url, musical_guide_url, awakening_guide_url, duration,
     has_interactive_elements, menu_level_id, created_at, updated_at
 )
 VALUES

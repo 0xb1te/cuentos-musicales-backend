@@ -32,7 +32,8 @@ public class AdminFileUploadController {
     
     private static final List<String> ALLOWED_AUDIO_TYPES = Arrays.asList(
         "audio/mpeg", "audio/mp3", "audio/wav", "audio/wave", "audio/ogg", "audio/mp4", "audio/m4a", 
-        "audio/webm", "audio/flac", "audio/aac", "audio/x-wav", "audio/x-ms-wma", "audio/3gpp", "audio/amr"
+        "audio/webm", "audio/flac", "audio/aac", "audio/x-wav", "audio/x-ms-wma", "audio/3gpp", "audio/amr",
+        "audio/weba", "audio/webm; codecs=opus", "application/octet-stream"
     );
     
     private static final List<String> ALLOWED_DOCUMENT_TYPES = Arrays.asList(
@@ -80,8 +81,12 @@ public class AdminFileUploadController {
             response.put("message", "File uploaded successfully");
             response.put("originalName", file.getOriginalFilename());
             response.put("size", String.valueOf(file.getSize()));
+            response.put("contentType", file.getContentType());
+            response.put("fileType", fileType);
             
             logger.info("File uploaded successfully: {}", fileUrl);
+            logger.info("File details - Original: {}, Size: {} bytes, Type: {}, Target: {}", 
+                file.getOriginalFilename(), file.getSize(), file.getContentType(), fileType);
             logger.info("=== Upload Complete ===");
             
             return ResponseEntity.ok(response);
@@ -95,9 +100,18 @@ public class AdminFileUploadController {
     
     private boolean isValidFileType(MultipartFile file, String fileType) {
         String contentType = file.getContentType();
+        String fileName = file.getOriginalFilename();
         
-        if (contentType == null) {
-            logger.warn("File content type is null, allowing upload");
+        if (contentType == null || contentType.equals("application/octet-stream")) {
+            // Try to determine file type by extension if MIME type is not available or generic
+            if (fileName != null) {
+                String extension = fileName.toLowerCase();
+                if (extension.endsWith(".weba") || extension.endsWith(".webm")) {
+                    logger.info("Detected WebM audio file by extension: {}", fileName);
+                    return fileType.toLowerCase().equals("audio");
+                }
+            }
+            logger.warn("File content type is null or generic, allowing upload for file: {}", fileName);
             return true; // Allow if content type cannot be determined
         }
         
@@ -105,6 +119,12 @@ public class AdminFileUploadController {
             case "images":
                 return ALLOWED_IMAGE_TYPES.contains(contentType.toLowerCase());
             case "audio":
+                // Special handling for WebM audio files
+                if (contentType.toLowerCase().startsWith("audio/webm") || 
+                    contentType.toLowerCase().equals("audio/weba") ||
+                    (fileName != null && (fileName.toLowerCase().endsWith(".weba") || fileName.toLowerCase().endsWith(".webm")))) {
+                    return true;
+                }
                 return ALLOWED_AUDIO_TYPES.contains(contentType.toLowerCase());
             case "documents":
                 return ALLOWED_DOCUMENT_TYPES.contains(contentType.toLowerCase());

@@ -33,13 +33,25 @@ public class FileUploadService {
         
         // Create directory if it doesn't exist
         Path uploadPath = Paths.get(uploadDir, subDirectory);
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
+        try {
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+                System.out.println("Created directory: " + uploadPath.toAbsolutePath());
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to create directory: " + uploadPath.toAbsolutePath());
+            throw new IOException("Failed to create upload directory: " + e.getMessage(), e);
         }
         
         // Save the file
         Path targetLocation = uploadPath.resolve(hashedFileName);
-        Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("File saved successfully: " + targetLocation.toAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Failed to save file: " + targetLocation.toAbsolutePath());
+            throw new IOException("Failed to save file: " + e.getMessage(), e);
+        }
         
         // Return the file URL
         return baseUrl + "/" + subDirectory + "/" + hashedFileName;

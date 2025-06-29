@@ -55,10 +55,19 @@ public class StoryService {
 		existingStory.setAudioFullUrl(updatedStory.getAudioFullUrl());
 		existingStory.setIndicativeImage1(updatedStory.getIndicativeImage1());
 		existingStory.setIndicativeImage2(updatedStory.getIndicativeImage2());
+		existingStory.setDedicationImageUrl(updatedStory.getDedicationImageUrl());
+		existingStory.setPresentationImageUrl(updatedStory.getPresentationImageUrl());
 		existingStory.setEmotionalGuideUrl(updatedStory.getEmotionalGuideUrl());
 		existingStory.setMusicalGuideUrl(updatedStory.getMusicalGuideUrl());
-		existingStory.setEducationalGuideUrl(updatedStory.getEducationalGuideUrl());
+		existingStory.setAwakeningGuideUrl(updatedStory.getAwakeningGuideUrl());
 		existingStory.setDuration(updatedStory.getDuration());
+		
+		// Update color theme fields
+		existingStory.setBackgroundColor(updatedStory.getBackgroundColor());
+		existingStory.setButtonsColor(updatedStory.getButtonsColor());
+		existingStory.setTextColorButtons(updatedStory.getTextColorButtons());
+		existingStory.setTextColor(updatedStory.getTextColor());
+		existingStory.setContainerBackgroundColor(updatedStory.getContainerBackgroundColor());
 
 		// Update TeachingGuide if it exists
 		if (updatedStory.getTeachingGuide() != null) {

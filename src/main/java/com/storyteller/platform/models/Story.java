@@ -56,7 +56,7 @@ public class Story {
 	private String presentationImageUrl;
 	private String emotionalGuideUrl;
 	private String musicalGuideUrl;
-	private String educationalGuideUrl;
+	private String awakeningGuideUrl;
 	private Integer duration;
 
 	@Column(columnDefinition = "TEXT")
@@ -67,7 +67,7 @@ public class Story {
 	private String buttonsColor; // background color for the buttons of the story
 	private String textColorButtons; // text color used on the text of the buttons of the container
 	private String textColor; // text color used on the text of the pop-ups
-
+	private String containerBackgroundColor; // background color for the button containers
 	private boolean hasInteractiveElements;
 
 	@OneToOne(mappedBy = "story", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
